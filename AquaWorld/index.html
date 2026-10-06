@@ -1,319 +1,1881 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>AquaWorld | Underwater World</title>
+<title>AquaWorld - Aquarium Fish Guide</title>
 
-    <link rel="stylesheet" href="css/style.css">
+<style>
+
+/* =========================
+   GLOBAL
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #03141f;
+    color: white;
+    line-height: 1.6;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 18px 7%;
+
+    background: rgba(3, 20, 31, 0.92);
+    backdrop-filter: blur(10px);
+
+    border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.logo {
+    font-size: 26px;
+    font-weight: bold;
+    color: #00d9ff;
+}
+
+.logo span {
+    color: white;
+}
+
+nav ul {
+    display: flex;
+    gap: 30px;
+    list-style: none;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+nav ul li a:hover {
+    color: #00d9ff;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 120px 20px 60px;
+
+    background:
+        linear-gradient(
+            rgba(3, 20, 31, 0.65),
+            rgba(3, 20, 31, 0.95)
+        ),
+        url("https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1600&q=80");
+
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-content {
+    max-width: 850px;
+}
+
+.hero h1 {
+    font-size: clamp(45px, 7vw, 85px);
+    margin-bottom: 20px;
+
+    background: linear-gradient(
+        90deg,
+        #00eaff,
+        #ffffff,
+        #00bfff
+    );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+    font-size: 20px;
+    color: #c5e9f4;
+    margin-bottom: 30px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 13px 28px;
+
+    background: #00bfe8;
+    color: #00141d;
+
+    text-decoration: none;
+    border-radius: 30px;
+
+    font-weight: bold;
+
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: white;
+    transform: translateY(-3px);
+}
+
+/* =========================
+   SECTIONS
+========================= */
+
+section {
+    padding: 90px 7%;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-title h2 {
+    font-size: 40px;
+    color: #00d9ff;
+    margin-bottom: 10px;
+}
+
+.section-title p {
+    color: #9cc5d1;
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-container {
+    max-width: 800px;
+    margin: 0 auto 30px;
+
+    display: flex;
+    gap: 10px;
+}
+
+.search-container input {
+    flex: 1;
+
+    padding: 15px 20px;
+
+    border-radius: 30px;
+    border: 1px solid #07516b;
+
+    background: #062333;
+    color: white;
+
+    outline: none;
+
+    font-size: 16px;
+}
+
+.search-container input:focus {
+    border-color: #00d9ff;
+}
+
+/* =========================
+   FILTER BUTTONS
+========================= */
+
+.filters {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-bottom: 40px;
+}
+
+.filter-btn {
+    border: 1px solid #08617c;
+
+    background: #062333;
+    color: white;
+
+    padding: 10px 20px;
+
+    border-radius: 25px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: #00c8ed;
+    color: #00141d;
+}
+
+/* =========================
+   FISH GRID
+========================= */
+
+.fish-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(260px, 1fr));
+
+    gap: 25px;
+}
+
+/* =========================
+   FISH CARD
+========================= */
+
+.fish-card {
+    background: #062333;
+
+    border: 1px solid rgba(0, 217, 255, 0.15);
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    transition: 0.3s;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.fish-card:hover {
+    transform: translateY(-8px);
+
+    border-color: #00d9ff;
+
+    box-shadow:
+        0 15px 40px rgba(0, 217, 255, 0.15);
+}
+
+.fish-image {
+    width: 100%;
+    height: 220px;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+.fish-info {
+    padding: 20px;
+}
+
+.fish-info h3 {
+    color: #00d9ff;
+    font-size: 23px;
+    margin-bottom: 5px;
+}
+
+.scientific {
+    color: #89aeb9;
+    font-style: italic;
+    margin-bottom: 12px;
+}
+
+.fish-info p {
+    color: #c1dce3;
+    margin-bottom: 10px;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+
+    margin: 12px 0;
+}
+
+.tag {
+    padding: 5px 10px;
+
+    background: #0a4055;
+    color: #9defff;
+
+    border-radius: 15px;
+
+    font-size: 12px;
+}
+
+.card-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.details-btn,
+.favorite-btn {
+    flex: 1;
+
+    padding: 10px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.details-btn {
+    border: none;
+
+    background: #00bfe8;
+    color: #00141d;
+}
+
+.favorite-btn {
+    border: 1px solid #00bfe8;
+
+    background: transparent;
+    color: #00d9ff;
+}
+
+.favorite-btn.active {
+    background: #00bfe8;
+    color: #00141d;
+}
+
+/* =========================
+   FEATURES
+========================= */
+
+.features {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
+
+    gap: 25px;
+}
+
+.feature {
+    padding: 30px;
+
+    background: #062333;
+
+    border-radius: 15px;
+
+    text-align: center;
+
+    border: 1px solid #0a4153;
+
+    transition: 0.3s;
+}
+
+.feature:hover {
+    transform: translateY(-5px);
+    border-color: #00d9ff;
+}
+
+.feature-icon {
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+
+.feature h3 {
+    color: #00d9ff;
+    margin-bottom: 10px;
+}
+
+.feature p {
+    color: #a9cbd4;
+}
+
+/* =========================
+   ABOUT
+========================= */
+
+.about {
+    background: #041b29;
+}
+
+.about-content {
+    max-width: 900px;
+    margin: auto;
+
+    text-align: center;
+}
+
+.about-content p {
+    color: #b5d5de;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    text-align: center;
+
+    padding: 30px;
+
+    background: #021019;
+
+    color: #7fa8b4;
+}
+
+footer strong {
+    color: #00d9ff;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0, 0, 0, 0.8);
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 2000;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 800px;
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    background: #062333;
+
+    border: 1px solid #00d9ff;
+
+    border-radius: 20px;
+
+    padding: 30px;
+
+    position: relative;
+}
+
+.close {
+    position: absolute;
+
+    right: 20px;
+    top: 15px;
+
+    font-size: 30px;
+
+    color: white;
+
+    cursor: pointer;
+}
+
+.modal-image {
+    width: 100%;
+    height: 300px;
+
+    object-fit: cover;
+
+    border-radius: 15px;
+
+    margin-bottom: 20px;
+}
+
+.modal-content h2 {
+    color: #00d9ff;
+
+    font-size: 32px;
+
+    margin-bottom: 5px;
+}
+
+.modal-content h3 {
+    color: #00d9ff;
+
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.details-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    margin-top: 15px;
+}
+
+.details-table td {
+    padding: 10px;
+
+    border-bottom: 1px solid #124456;
+}
+
+.details-table td:first-child {
+    color: #00d9ff;
+    font-weight: bold;
+}
+
+/* =========================
+   NO RESULTS
+========================= */
+
+.no-results {
+    display: none;
+
+    text-align: center;
+
+    padding: 40px;
+
+    color: #8fb5c0;
+}
+
+/* =========================
+   BUBBLES
+========================= */
+
+.bubble {
+    position: fixed;
+
+    bottom: -50px;
+
+    width: 15px;
+    height: 15px;
+
+    border: 1px solid rgba(255,255,255,0.4);
+
+    border-radius: 50%;
+
+    animation: bubbleUp 10s linear infinite;
+
+    pointer-events: none;
+
+    z-index: 1;
+}
+
+.bubble:nth-child(1) {
+    left: 10%;
+    animation-delay: 1s;
+}
+
+.bubble:nth-child(2) {
+    left: 30%;
+    animation-delay: 3s;
+}
+
+.bubble:nth-child(3) {
+    left: 55%;
+    animation-delay: 5s;
+}
+
+.bubble:nth-child(4) {
+    left: 80%;
+    animation-delay: 2s;
+}
+
+@keyframes bubbleUp {
+
+    0% {
+        transform: translateY(0);
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-110vh);
+        opacity: 0;
+    }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+    nav {
+        padding: 15px 5%;
+    }
+
+    nav ul {
+        gap: 12px;
+    }
+
+    nav ul li a {
+        font-size: 13px;
+    }
+
+    .hero {
+        padding-top: 120px;
+    }
+
+    section {
+        padding: 70px 5%;
+    }
+
+    .search-container {
+        flex-direction: column;
+    }
+
+    .modal-image {
+        height: 220px;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .logo {
+        font-size: 20px;
+    }
+
+    nav ul {
+        gap: 8px;
+    }
+
+    nav ul li a {
+        font-size: 11px;
+    }
+
+    .hero h1 {
+        font-size: 45px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    .section-title h2 {
+        font-size: 30px;
+    }
+}
+
+</style>
 </head>
+
 
 <body>
 
-    <!-- Animated bubbles -->
-    <div class="bubbles">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
+
+<!-- =========================
+     BUBBLES
+========================= -->
+
+<div class="bubble"></div>
+<div class="bubble"></div>
+<div class="bubble"></div>
+<div class="bubble"></div>
+
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav>
+
+    <div class="logo">
+        🐠 Aqua<span>World</span>
     </div>
 
-    <!-- Navigation -->
-    <header class="navbar">
+    <ul>
+        <li>
+            <a href="#home">Home</a>
+        </li>
 
-        <div class="logo">
-            🐠 AquaWorld
-        </div>
+        <li>
+            <a href="#fish">Fish</a>
+        </li>
 
-        <nav>
-            <a href="index.html" class="active">Home</a>
-            <a href="fish.html">Fish</a>
-            <a href="details.html">Details</a>
-        </nav>
+        <li>
+            <a href="#features">Features</a>
+        </li>
 
-    </header>
+        <li>
+            <a href="#about">About</a>
+        </li>
+    </ul>
 
-
-    <!-- Hero Section -->
-    <section class="hero">
-
-        <div class="hero-content">
-
-            <p class="small-title">
-                WELCOME TO AQUAWORLD
-            </p>
-
-            <h1>
-                Discover the
-                <span>Underwater World</span>
-            </h1>
-
-            <p>
-                Explore beautiful aquarium fish, discover their characteristics,
-                learn about their care requirements and create your own underwater
-                experience.
-            </p>
-
-            <div class="hero-buttons">
-
-                <a href="fish.html" class="btn">
-                    Explore Fish 🐟
-                </a>
-
-                <a href="#popular" class="btn secondary">
-                    Popular Fish
-                </a>
-
-            </div>
-
-        </div>
-
-        <div class="hero-image">
-
-            <img
-                src="images/oscar.jpg"
-                alt="Oscar Fish"
-            >
-
-        </div>
-
-    </section>
+</nav>
 
 
-    <!-- Features -->
-    <section class="features">
+<!-- =========================
+     HERO
+========================= -->
 
-        <div class="feature-card">
+<section class="hero" id="home">
 
-            <div class="feature-icon">
-                🐟
-            </div>
+    <div class="hero-content">
 
-            <h3>
-                Beautiful Fish
-            </h3>
+        <h1>AquaWorld</h1>
 
-            <p>
-                Explore different freshwater and saltwater aquarium fish.
-            </p>
+        <p>
+            Discover beautiful aquarium fish,
+            learn about their care and create
+            the perfect underwater world.
+        </p>
 
-        </div>
+        <a href="#fish" class="btn">
+            Explore Fish 🐠
+        </a>
+
+    </div>
+
+</section>
 
 
-        <div class="feature-card">
+<!-- =========================
+     FISH SECTION
+========================= -->
+
+<section id="fish">
+
+    <div class="section-title">
+
+        <h2>Explore Aquarium Fish</h2>
+
+        <p>
+            Find information about popular
+            freshwater aquarium fish.
+        </p>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="search-container">
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search fish..."
+        >
+
+    </div>
+
+
+    <!-- FILTER -->
+
+    <div class="filters">
+
+        <button
+            class="filter-btn active"
+            onclick="filterFish('All', this)"
+        >
+            All
+        </button>
+
+        <button
+            class="filter-btn"
+            onclick="filterFish('Freshwater', this)"
+        >
+            Freshwater
+        </button>
+
+        <button
+            class="filter-btn"
+            onclick="filterFish('Beginner', this)"
+        >
+            Beginner Friendly
+        </button>
+
+        <button
+            class="filter-btn"
+            onclick="filterFish('Peaceful', this)"
+        >
+            Peaceful
+        </button>
+
+    </div>
+
+
+    <!-- FISH CARDS -->
+
+    <div
+        class="fish-grid"
+        id="fishGrid"
+    ></div>
+
+
+    <div
+        class="no-results"
+        id="noResults"
+    >
+        <h3>No fish found 🐟</h3>
+
+        <p>
+            Try another search or filter.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     FEATURES
+========================= -->
+
+<section id="features">
+
+    <div class="section-title">
+
+        <h2>AquaWorld Features</h2>
+
+        <p>
+            Everything you need to explore
+            aquarium fish.
+        </p>
+
+    </div>
+
+
+    <div class="features">
+
+        <div class="feature">
 
             <div class="feature-icon">
                 🔍
             </div>
 
-            <h3>
-                Easy Search
-            </h3>
+            <h3>Fish Search</h3>
 
             <p>
-                Search for your favorite fish quickly using our dynamic gallery.
+                Quickly search through
+                different aquarium fish.
             </p>
 
         </div>
 
 
-        <div class="feature-card">
+        <div class="feature">
+
+            <div class="feature-icon">
+                🐠
+            </div>
+
+            <h3>Fish Information</h3>
+
+            <p>
+                Learn about temperature,
+                pH, size and lifespan.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
 
             <div class="feature-icon">
                 ❤️
             </div>
 
-            <h3>
-                Save Favorites
-            </h3>
+            <h3>Favorites</h3>
 
             <p>
-                Save the fish you like and easily find them again.
+                Save your favorite fish
+                directly in your browser.
             </p>
 
         </div>
 
 
-        <div class="feature-card">
+        <div class="feature">
 
             <div class="feature-icon">
-                🌊
+                💧
             </div>
 
-            <h3>
-                Fish Care
-            </h3>
+            <h3>Aquarium Care</h3>
 
             <p>
-                Learn about temperature, pH, tank size, diet and more.
+                Understand basic aquarium
+                care requirements.
             </p>
 
         </div>
 
-    </section>
+    </div>
+
+</section>
 
 
-    <!-- Popular Fish -->
-    <section class="popular" id="popular">
+<!-- =========================
+     ABOUT
+========================= -->
 
-        <div class="section-heading">
+<section
+    id="about"
+    class="about"
+>
 
-            <p>
-                EXPLORE
-            </p>
+    <div class="section-title">
 
-            <h2>
-                Popular Aquarium Fish
-            </h2>
+        <h2>About AquaWorld</h2>
 
-            <span>
-                Discover some of the most popular fish for home aquariums.
-            </span>
-
-        </div>
+    </div>
 
 
-        <div class="popular-grid">
-
-            <div class="popular-card">
-
-                <img
-                    src="images/betta.jpg"
-                    alt="Betta Fish"
-                >
-
-                <div>
-                    <h3>Betta Fish</h3>
-                    <p>Beautiful and colorful freshwater fish.</p>
-                </div>
-
-            </div>
-
-
-            <div class="popular-card">
-
-                <img
-                    src="images/guppy.jpg"
-                    alt="Guppy"
-                >
-
-                <div>
-                    <h3>Guppy</h3>
-                    <p>Small, colorful and beginner friendly.</p>
-                </div>
-
-            </div>
-
-
-            <div class="popular-card">
-
-                <img
-                    src="images/moully.jpg"
-                    alt="Moully"
-                >
-
-                <div>
-                    <h3>Neon Tetra</h3>
-                    <p>Peaceful schooling aquarium fish.</p>
-                </div>
-
-            </div>
-
-
-            <div class="popular-card">
-
-                <img
-                    src="images/gold.jpg"
-                    alt="gold"
-                >
-
-                <div>
-                    <h3>Goldfish</h3>
-                    <p>One of the world's most popular aquarium fish.</p>
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="center-button">
-
-            <a href="fish.html" class="btn">
-                View All Fish →
-            </a>
-
-        </div>
-
-    </section>
-
-
-    <!-- About -->
-    <section class="about">
-
-        <div class="about-image">
-
-            <img
-                src="images/guppy.jpg"
-                alt="guppy"
-            >
-
-        </div>
-
-
-        <div class="about-content">
-
-            <p class="small-title">
-                ABOUT AQUAWORLD
-            </p>
-
-            <h2>
-                Your Digital
-                <span>Aquarium Guide</span>
-            </h2>
-
-            <p>
-                AquaWorld is a simple aquarium information platform designed
-                for fish lovers and aquarium beginners.
-            </p>
-
-            <p>
-                Explore fish species, understand their requirements and
-                discover the information you need to maintain a healthy
-                aquarium.
-            </p>
-
-            <a href="fish.html" class="btn">
-                Explore Fish
-            </a>
-
-        </div>
-
-    </section>
-
-
-    <!-- Footer -->
-    <footer>
-
-        <div class="footer-logo">
-            🐠 AquaWorld
-        </div>
+    <div class="about-content">
 
         <p>
-            Discover • Learn • Care • Enjoy
+            AquaWorld is a simple aquarium
+            fish information website designed
+            for aquarium enthusiasts and
+            beginners.
         </p>
 
-        <p class="copyright">
-            © 2026 AquaWorld. All Rights Reserved.
+        <p>
+            Explore different fish species,
+            learn about their requirements
+            and discover which fish may be
+            suitable for your aquarium.
         </p>
 
-    </footer>
+    </div>
 
+</section>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <p>
+        © 2026
+        <strong>AquaWorld</strong>.
+        All Rights Reserved.
+    </p>
+
+</footer>
+
+
+<!-- =========================
+     FISH DETAILS MODAL
+========================= -->
+
+<div
+    class="modal"
+    id="fishModal"
+>
+
+    <div class="modal-content">
+
+        <span
+            class="close"
+            onclick="closeModal()"
+        >
+            ×
+        </span>
+
+
+        <img
+            id="modalImage"
+            class="modal-image"
+            src=""
+            alt="Fish"
+        >
+
+
+        <h2 id="modalName"></h2>
+
+        <p
+            id="modalScientific"
+            class="scientific"
+        ></p>
+
+
+        <p id="modalDescription"></p>
+
+
+        <h3>
+            Fish Information
+        </h3>
+
+
+        <table class="details-table">
+
+            <tr>
+                <td>Type</td>
+                <td id="modalType"></td>
+            </tr>
+
+            <tr>
+                <td>Temperature</td>
+                <td id="modalTemperature"></td>
+            </tr>
+
+            <tr>
+                <td>pH</td>
+                <td id="modalPH"></td>
+            </tr>
+
+            <tr>
+                <td>Lifespan</td>
+                <td id="modalLifespan"></td>
+            </tr>
+
+            <tr>
+                <td>Tank Size</td>
+                <td id="modalTank"></td>
+            </tr>
+
+            <tr>
+                <td>Diet</td>
+                <td id="modalDiet"></td>
+            </tr>
+
+            <tr>
+                <td>Difficulty</td>
+                <td id="modalDifficulty"></td>
+            </tr>
+
+            <tr>
+                <td>Temperament</td>
+                <td id="modalTemperament"></td>
+            </tr>
+
+        </table>
+
+
+        <h3>
+            Care Tips
+        </h3>
+
+        <p id="modalCare"></p>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+<script>
+
+/* =========================
+   FISH DATABASE
+========================= */
+
+const fishData = [
+
+    {
+        id: 1,
+
+        name: "Betta Fish",
+
+        scientific: "Betta splendens",
+
+        type: "Freshwater",
+
+        temperature: "24–30°C",
+
+        ph: "6.0–8.0",
+
+        lifespan: "2–5 years",
+
+        tank: "20L+",
+
+        diet: "Carnivore",
+
+        difficulty: "Easy",
+
+        temperament: "Semi-aggressive",
+
+        size: "6–7 cm",
+
+        beginner: true,
+
+        image:
+        "https://images.unsplash.com/photo-1520302519878-2f5d7d0f6f9e?auto=format&fit=crop&w=900&q=80",
+
+        description:
+        "Betta fish are colorful freshwater fish known for their flowing fins and beautiful appearance.",
+
+        care:
+        "Provide clean warm water, gentle filtration and avoid keeping two male bettas together."
+    },
+
+
+    {
+        id: 2,
+
+        name: "Guppy",
+
+        scientific: "Poecilia reticulata",
+
+        type: "Freshwater",
+
+        temperature: "22–28°C",
+
+        ph: "6.8–8.0",
+
+        lifespan: "1–3 years",
+
+        tank: "40L+",
+
+        diet: "Omnivore",
+
+        difficulty: "Easy",
+
+        temperament: "Peaceful",
+
+        size: "3–6 cm",
+
+        beginner: true,
+
+        image:
+        "https://images.unsplash.com/photo-1524704654690-b56c05c78a00?auto=format&fit=crop&w=900&q=80",
+
+        description:
+        "Guppies are colorful, peaceful and active community fish that are excellent for beginners.",
+
+        care:
+        "Keep guppies in groups with clean water, plants and a balanced diet."
+    },
+
+
+    {
+        id: 3,
+
+        name: "Neon Tetra",
+
+        scientific: "Paracheirodon innesi",
+
+        type: "Freshwater",
+
+        temperature: "20–26°C",
+
+        ph: "5.5–7.5",
+
+        lifespan: "3–5 years",
+
+        tank: "40L+",
+
+        diet: "Omnivore",
+
+        difficulty: "Easy",
+
+        temperament: "Peaceful",
+
+        size: "3–4 cm",
+
+        beginner: true,
+
+        image:
+        "https://images.unsplash.com/photo-1535591273668-578e31182c4f?auto=format&fit=crop&w=900&q=80",
+
+        description:
+        "Neon Tetras are small schooling fish recognized by their bright blue and red stripes.",
+
+        care:
+        "Keep them in groups of at least six and provide plants and hiding spaces."
+    },
+
+
+    {
+        id: 4,
+
+        name: "Goldfish",
+
+        scientific: "Carassius auratus",
+
+        type: "Freshwater",
+
+        temperature: "18–24°C",
+
+        ph: "6.5–8.0",
+
+        lifespan: "10–15+ years",
+
+        tank: "100L+",
+
+        diet: "Omnivore",
+
+        difficulty: "Medium",
+
+        temperament: "Peaceful",
+
+        size: "15–25 cm",
+
+        beginner: true,
+
+        image:
+        "https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?auto=format&fit=crop&w=900&q=80",
+
+        description:
+        "Goldfish are popular freshwater fish that can grow significantly larger than many beginners expect.",
+
+        care:
+        "Use a large aquarium with strong filtration and perform regular water changes."
+    },
+
+
+    {
+        id: 5,
+
+        name: "Angelfish",
+
+        scientific: "Pterophyllum scalare",
+
+        type: "Freshwater",
+
+        temperature: "24–30°C",
+
+        ph: "6.0–7.5",
+
+        lifespan: "8–10 years",
+
+        tank: "120L+",
+
+        diet: "Omnivore",
+
+        difficulty: "Medium",
+
+        temperament: "Semi-aggressive",
+
+        size: "15 cm",
+
+        beginner: false,
+
+        image:
+        "https://images.unsplash.com/photo-1520990269814-2d6c0c5d2d68?auto=format&fit=crop&w=900&q=80",
+
+        description:
+        "Angelfish are elegant freshwater fish with tall bodies and long fins.",
+
+        care:
+        "Provide a tall aquarium, stable water conditions and enough swimming space."
+    },
+
+
+    {
+        id: 6,
+
+        name: "Oscar Fish",
+
+        scientific: "Astronotus ocellatus",
+
+        type: "Freshwater",
+
+        temperature: "23–28°C",
+
+        ph: "6.0–8.0",
+
+        lifespan: "10–15 years",
+
+        tank: "250L+",
+
+        diet: "Carnivore",
+
+        difficulty: "Hard",
+
+        temperament: "Territorial",
+
+        size: "30–35 cm",
+
+        beginner: false,
+
+        image:
+        "https://images.unsplash.com/photo-1545816250-e12bedf9a7e9?auto=format&fit=crop&w=900&q=80",
+
+        description:
+        "Oscar fish are large intelligent cichlids known for their personality and territorial behavior.",
+
+        care:
+        "Provide a very large aquarium, powerful filtration and plenty of swimming space."
+    },
+
+
+    {
+        id: 7,
+
+        name: "Molly",
+
+        scientific: "Poecilia sphenops",
+
+        type: "Freshwater",
+
+        temperature: "24–28°C",
+
+        ph: "7.0–8.5",
+
+        lifespan: "3–5 years",
+
+        tank: "60L+",
+
+        diet: "Omnivore",
+
+        difficulty: "Easy",
+
+        temperament: "Peaceful",
+
+        size: "6–10 cm",
+
+        beginner: true,
+
+        image:
+        "https://images.unsplash.com/photo-1535591273668-578e31182c4f?auto=format&fit=crop&w=900&q=80",
+
+        description:
+        "Mollies are peaceful community fish available in many colors and body shapes.",
+
+        care:
+        "Keep water clean and provide plants and hiding spaces."
+    },
+
+
+    {
+        id: 8,
+
+        name: "Platy",
+
+        scientific: "Xiphophorus maculatus",
+
+        type: "Freshwater",
+
+        temperature: "21–27°C",
+
+        ph: "7.0–8.2",
+
+        lifespan: "3–5 years",
+
+        tank: "40L+",
+
+        diet: "Omnivore",
+
+        difficulty: "Easy",
+
+        temperament: "Peaceful",
+
+        size: "5–7 cm",
+
+        beginner: true,
+
+        image:
+        "https://images.unsplash.com/photo-1545816250-e12bedf9a7e9?auto=format&fit=crop&w=900&q=80",
+
+        description:
+        "Platies are colorful peaceful community fish that are easy to care for.",
+
+        care:
+        "Maintain stable water parameters and provide a balanced diet."
+    },
+
+
+    {
+        id: 9,
+
+        name: "Discus",
+
+        scientific: "Symphysodon",
+
+        type: "Freshwater",
+
+        temperature: "28–31°C",
+
+        ph: "5.5–7.0",
+
+        lifespan: "8–10 years",
+
+        tank: "200L+",
+
+        diet: "Omnivore",
+
+        difficulty: "Hard",
+
+        temperament: "Peaceful",
+
+        size: "15–20 cm",
+
+        beginner: false,
+
+        image:
+        "https://images.unsplash.com/photo-1535591273668-578e31182c4f?auto=format&fit=crop&w=900&q=80",
+
+        description:
+        "Discus fish are famous for their round body shape and beautiful colors.",
+
+        care:
+        "Maintain excellent water quality, stable warm temperatures and provide a spacious aquarium."
+    },
+
+
+    {
+        id: 10,
+
+        name: "Corydoras",
+
+        scientific: "Corydoras paleatus",
+
+        type: "Freshwater",
+
+        temperature: "22–26°C",
+
+        ph: "6.0–7.5",
+
+        lifespan: "5–8 years",
+
+        tank: "60L+",
+
+        diet: "Omnivore",
+
+        difficulty: "Easy",
+
+        temperament: "Peaceful",
+
+        size: "5–7 cm",
+
+        beginner: true,
+
+        image:
+        "https://images.unsplash.com/photo-1545816250-e12bedf9a7e9?auto=format&fit=crop&w=900&q=80",
+
+        description:
+        "Corydoras are peaceful bottom-dwelling catfish that are excellent community aquarium fish.",
+
+        care:
+        "Keep them in groups and provide a soft substrate with hiding places."
+    }
+
+];
+
+
+/* =========================
+   VARIABLES
+========================= */
+
+let currentFilter = "All";
+
+let favorites =
+    JSON.parse(localStorage.getItem("aquaworldFavorites")) || [];
+
+
+/* =========================
+   DISPLAY FISH
+========================= */
+
+function displayFish() {
+
+    const grid =
+        document.getElementById("fishGrid");
+
+    const search =
+        document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    const filteredFish =
+        fishData.filter(fish => {
+
+            const matchesSearch =
+                fish.name
+                .toLowerCase()
+                .includes(search);
+
+
+            let matchesFilter = true;
+
+
+            if (currentFilter === "Freshwater") {
+
+                matchesFilter =
+                    fish.type === "Freshwater";
+
+            }
+
+
+            if (currentFilter === "Beginner") {
+
+                matchesFilter =
+                    fish.beginner === true;
+
+            }
+
+
+            if (currentFilter === "Peaceful") {
+
+                matchesFilter =
+                    fish.temperament === "Peaceful";
+
+            }
+
+
+            return matchesSearch && matchesFilter;
+
+        });
+
+
+    grid.innerHTML = "";
+
+
+    if (filteredFish.length === 0) {
+
+        document
+        .getElementById("noResults")
+        .style.display = "block";
+
+        return;
+
+    }
+
+
+    document
+    .getElementById("noResults")
+    .style.display = "none";
+
+
+    filteredFish.forEach(fish => {
+
+        const isFavorite =
+            favorites.includes(fish.id);
+
+
+        const card =
+            document.createElement("div");
+
+
+        card.className = "fish-card";
+
+
+        card.innerHTML = `
+
+            <img
+                class="fish-image"
+                src="${fish.image}"
+                alt="${fish.name}"
+                loading="lazy"
+            >
+
+            <div class="fish-info">
+
+                <h3>
+                    ${fish.name}
+                </h3>
+
+                <div class="scientific">
+                    ${fish.scientific}
+                </div>
+
+                <p>
+                    ${fish.description}
+                </p>
+
+                <div class="tags">
+
+                    <span class="tag">
+                        ${fish.type}
+                    </span>
+
+                    <span class="tag">
+                        ${fish.difficulty}
+                    </span>
+
+                    <span class="tag">
+                        ${fish.temperament}
+                    </span>
+
+                </div>
+
+                <div class="card-buttons">
+
+                    <button
+                        class="details-btn"
+                        onclick="openDetails(${fish.id})"
+                    >
+                        Details
+                    </button>
+
+                    <button
+                        class="favorite-btn ${isFavorite ? "active" : ""}"
+                        onclick="toggleFavorite(${fish.id})"
+                    >
+                        ${isFavorite ? "♥ Saved" : "♡ Save"}
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+
+
+        grid.appendChild(card);
+
+    });
+
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+document
+.getElementById("searchInput")
+.addEventListener(
+    "input",
+    displayFish
+);
+
+
+/* =========================
+   FILTER
+========================= */
+
+function filterFish(
+    filter,
+    button
+) {
+
+    currentFilter = filter;
+
+
+    document
+    .querySelectorAll(".filter-btn")
+    .forEach(btn => {
+
+        btn.classList.remove("active");
+
+    });
+
+
+    button.classList.add("active");
+
+
+    displayFish();
+
+}
+
+
+/* =========================
+   FAVORITES
+========================= */
+
+function toggleFavorite(id) {
+
+    if (favorites.includes(id)) {
+
+        favorites =
+            favorites.filter(
+                favoriteId => favoriteId !== id
+            );
+
+    } else {
+
+        favorites.push(id);
+
+    }
+
+
+    localStorage.setItem(
+        "aquaworldFavorites",
+        JSON.stringify(favorites)
+    );
+
+
+    displayFish();
+
+}
+
+
+/* =========================
+   OPEN DETAILS
+========================= */
+
+function openDetails(id) {
+
+    const fish =
+        fishData.find(
+            item => item.id === id
+        );
+
+
+    if (!fish) return;
+
+
+    document
+    .getElementById("modalImage")
+    .src = fish.image;
+
+
+    document
+    .getElementById("modalName")
+    .textContent = fish.name;
+
+
+    document
+    .getElementById("modalScientific")
+    .textContent = fish.scientific;
+
+
+    document
+    .getElementById("modalDescription")
+    .textContent = fish.description;
+
+
+    document
+    .getElementById("modalType")
+    .textContent = fish.type;
+
+
+    document
+    .getElementById("modalTemperature")
+    .textContent = fish.temperature;
+
+
+    document
+    .getElementById("modalPH")
+    .textContent = fish.ph;
+
+
+    document
+    .getElementById("modalLifespan")
+    .textContent = fish.lifespan;
+
+
+    document
+    .getElementById("modalTank")
+    .textContent = fish.tank;
+
+
+    document
+    .getElementById("modalDiet")
+    .textContent = fish.diet;
+
+
+    document
+    .getElementById("modalDifficulty")
+    .textContent = fish.difficulty;
+
+
+    document
+    .getElementById("modalTemperament")
+    .textContent = fish.temperament;
+
+
+    document
+    .getElementById("modalCare")
+    .textContent = fish.care;
+
+
+    document
+    .getElementById("fishModal")
+    .classList.add("show");
+
+}
+
+
+/* =========================
+   CLOSE MODAL
+========================= */
+
+function closeModal() {
+
+    document
+    .getElementById("fishModal")
+    .classList.remove("show");
+
+}
+
+
+/* =========================
+   CLOSE WHEN CLICKING OUTSIDE
+========================= */
+
+document
+.getElementById("fishModal")
+.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target === this
+        ) {
+
+            closeModal();
+
+        }
+
+    }
+);
+
+
+/* =========================
+   ESC KEY
+========================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Escape") {
+
+            closeModal();
+
+        }
+
+    }
+);
+
+
+/* =========================
+   INITIAL LOAD
+========================= */
+
+displayFish();
+
+</script>
 
 </body>
 </html>
