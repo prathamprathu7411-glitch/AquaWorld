@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>AquaWorld | Fish Gallery</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- Bubbles -->
+
+    <div class="bubbles">
+
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+
+    </div>
+
+
+    <!-- Navigation -->
+
+    <header class="navbar">
+
+        <div class="logo">
+            🐠 AquaWorld
+        </div>
+
+
+        <nav>
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a
+                href="fish.html"
+                class="active"
+            >
+                Fish
+            </a>
+
+            <a href="details.html">
+                Details
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- Fish Page -->
+
+    <main class="fish-page">
+
+        <section class="section-heading">
+
+            <p>
+                AQUARIUM COLLECTION
+            </p>
+
+            <h1>
+                Explore Fish
+            </h1>
+
+            <span>
+                Discover beautiful aquarium fish and learn more about them.
+            </span>
+
+        </section>
+
+
+        <!-- Search -->
+
+        <div class="search-container">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="🔍 Search fish..."
+            >
+
+        </div>
+
+
+        <!-- Filters -->
+
+        <div class="filters">
+
+            <button
+                class="filter-btn active"
+                data-filter="All"
+            >
+                All
+            </button>
+
+            <button
+                class="filter-btn"
+                data-filter="Freshwater"
+            >
+                Freshwater
+            </button>
+
+            <button
+                class="filter-btn"
+                data-filter="Saltwater"
+            >
+                Saltwater
+            </button>
+
+            <button
+                class="filter-btn"
+                data-filter="Easy"
+            >
+                Beginner Friendly
+            </button>
+
+        </div>
+
+
+        <!-- Fish Cards -->
+
+        <section
+            id="fishContainer"
+            class="fish-grid"
+        >
+
+        </section>
+
+
+        <!-- No Results -->
+
+        <div
+            id="noResults"
+            class="no-results"
+        >
+
+            <h2>
+                🐟 No Fish Found
+            </h2>
+
+            <p>
+                Try another search.
+            </p>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+
+        <div class="footer-logo">
+            🐠 AquaWorld
+        </div>
+
+        <p>
+            Discover • Learn • Care • Enjoy
+        </p>
+
+        <p class="copyright">
+            © 2026 AquaWorld
+        </p>
+
+    </footer>
+
+
+    <script src="js/fish.js"></script>
+
+</body>
+
+</html>
